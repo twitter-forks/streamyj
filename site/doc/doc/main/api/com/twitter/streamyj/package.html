@@ -1,0 +1,301 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>com.twitter.streamyj</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value" onload="windowTitle();">
+
+      <p id="owner"><a href="../../package.html" class="extype" name="com">com</a>.<a href="../package.html" class="extype" name="com.twitter">twitter</a></p>
+
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <h1>streamyj</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol">
+        <span class="name">streamyj</span>
+        
+        
+        
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"></div>
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+            </div>
+          <div id="impl">
+              <span class="filtertype">Impl.</span>
+              <ol><li class="concrete in">Concrete</li><li class="abstract in">Abstract</li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.FieldName">
+      <a id="FieldName:FieldName"></a>
+      <h4 class="signature"><a href="FieldName.html">
+      <span class="kind">case class</span>
+      <span class="symbol">
+        <span class="name">FieldName</span>
+        
+        <span class="params">(<span name="name">name: String</span>)</span>
+        <span class="result"> extends StreamyToken with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.JsonUnpackingException">
+      <a id="JsonUnpackingException:JsonUnpackingException"></a>
+      <h4 class="signature"><a href="JsonUnpackingException.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">JsonUnpackingException</span>
+        
+        
+        <span class="result"> extends JsonProcessingException</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.Streamy">
+      <a id="Streamy:Streamy"></a>
+      <h4 class="signature"><a href="Streamy.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Streamy</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A helper for the Jackson JSON parser.</p>
+    </li><li visbl="pub" data-isabs="true" name="com.twitter.streamyj.StreamyToken">
+      <a id="StreamyToken:StreamyToken"></a>
+      <h4 class="signature"><a href="StreamyToken.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">StreamyToken</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">The base case class for a JsonToken
+</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.StreamyUnpacker">
+      <a id="StreamyUnpacker:StreamyUnpacker"></a>
+      <h4 class="signature"><a href="StreamyUnpacker.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">StreamyUnpacker</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.ValueBoolean">
+      <a id="ValueBoolean:ValueBoolean"></a>
+      <h4 class="signature"><a href="ValueBoolean.html">
+      <span class="kind">case class</span>
+      <span class="symbol">
+        <span class="name">ValueBoolean</span>
+        
+        <span class="params">(<span name="value">value: Boolean</span>)</span>
+        <span class="result"> extends ValueScalar with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.ValueDouble">
+      <a id="ValueDouble:ValueDouble"></a>
+      <h4 class="signature"><a href="ValueDouble.html">
+      <span class="kind">case class</span>
+      <span class="symbol">
+        <span class="name">ValueDouble</span>
+        
+        <span class="params">(<span name="value">value: Double</span>)</span>
+        <span class="result"> extends ValueScalar with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.ValueLong">
+      <a id="ValueLong:ValueLong"></a>
+      <h4 class="signature"><a href="ValueLong.html">
+      <span class="kind">case class</span>
+      <span class="symbol">
+        <span class="name">ValueLong</span>
+        
+        <span class="params">(<span name="value">value: Long</span>)</span>
+        <span class="result"> extends ValueScalar with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="true" name="com.twitter.streamyj.ValueScalar">
+      <a id="ValueScalar:ValueScalar"></a>
+      <h4 class="signature"><a href="ValueScalar.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ValueScalar</span>
+        
+        
+        <span class="result"> extends StreamyToken</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A base class for long, double, and string fields</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.ValueString">
+      <a id="ValueString:ValueString"></a>
+      <h4 class="signature"><a href="ValueString.html">
+      <span class="kind">case class</span>
+      <span class="symbol">
+        <span class="name">ValueString</span>
+        
+        <span class="params">(<span name="value">value: String</span>)</span>
+        <span class="result"> extends ValueScalar with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li></ol>
+            </div>
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.EndArray">
+      <a id="EndArray:EndArray"></a>
+      <h4 class="signature"><a href="EndArray$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">EndArray</span>
+        
+        
+        <span class="result"> extends StreamyToken with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.EndObject">
+      <a id="EndObject:EndObject"></a>
+      <h4 class="signature"><a href="EndObject$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">EndObject</span>
+        
+        
+        <span class="result"> extends StreamyToken with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.NotAvailable">
+      <a id="NotAvailable:NotAvailable"></a>
+      <h4 class="signature"><a href="NotAvailable$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">NotAvailable</span>
+        
+        
+        <span class="result"> extends StreamyToken with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.StartArray">
+      <a id="StartArray:StartArray"></a>
+      <h4 class="signature"><a href="StartArray$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">StartArray</span>
+        
+        
+        <span class="result"> extends StreamyToken with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.StartObject">
+      <a id="StartObject:StartObject"></a>
+      <h4 class="signature"><a href="StartObject$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">StartObject</span>
+        
+        
+        <span class="result"> extends StreamyToken with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.StreamToken">
+      <a id="StreamToken:StreamToken"></a>
+      <h4 class="signature"><a href="StreamToken$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">StreamToken</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.Streamy">
+      <a id="Streamy:Streamy"></a>
+      <h4 class="signature"><a href="Streamy$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Streamy</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Just store the PartialFunction type for parse functions so
+it can be referenced by user implementations (easily)
+</p>
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.StreamyUnpacker">
+      <a id="StreamyUnpacker:StreamyUnpacker"></a>
+      <h4 class="signature"><a href="StreamyUnpacker$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">StreamyUnpacker</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" data-isabs="false" name="com.twitter.streamyj.ValueNull">
+      <a id="ValueNull:ValueNull"></a>
+      <h4 class="signature"><a href="ValueNull$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">ValueNull</span>
+        
+        
+        <span class="result"> extends StreamyToken with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">maps to JsonToken.</p>
+    </li></ol>
+            </div>
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

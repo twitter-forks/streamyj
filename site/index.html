@@ -1,0 +1,78 @@
+
+<html>
+<head>
+<title>streamyj</title>
+</head>
+<body>
+<h1>README</h1>
+<h1>StreamyJ</h1>
+
+<p>StreamyJ is a Scala helper for the Jackson streaming JSON parser.
+Running some (likely entirely unreliable) benchmarks shows Jackson
+to be significantly faster than GSON, which seems to be the most
+popular non-streaming JSON parser available.</p>
+
+<p>THIS CODE IS DRAFT QUALITY AT BEST.  I've run tests with Twitter JSON
+formats, but the testing is by no means thorough.  There are almost
+certainly dire bugs lurking.</p>
+
+<p>StreamyJ makes it easy to write idiomatic Scala parsers using Jackson by</p>
+
+<ul>
+<li>Converting JsonToken constants to case classes, allowing pattern matching</li>
+<li>Providing a mechanism to provide partial functions to the parser to take action
+on specific parsed items.</li>
+</ul>
+
+<p>It's easiest to show with an example</p>
+
+<pre><code>val s = new Streamy("""{"bar":1}""")
+s readObject {
+  case "bar" =&gt; println(s.readScalar())
+}
+</code></pre>
+
+<p>In this case, we call readObject() on the Streamy object to tell the parser to read the current object.
+The case statements tell Streamy to print the current field value when the field name is "bar".
+Simple enough.</p>
+
+<p>A slightly more complex example</p>
+
+<pre><code>var baz = 0L
+val s = new Streamy("""{"bar":{"baz":1}}""")
+s readObject {
+  case "bar" =&gt; s readObject {
+    case "baz" =&gt; baz = s.readLong()
+  }
+}
+</code></pre>
+
+<p>Here we have nested handlers.  When the parser encounters the "bar" field, we tell it
+to read another object.  In this nested object, when you see the baz field, assign our
+baz var whatever the value of the baz field is in JSON.</p>
+
+<p>Parsing arrays is also handled.  Instead of field names when reading an object,
+the readArray takes a function that takes the current index in the array.</p>
+
+<pre><code>val s = new Streamy("""{"bar":[1,2,3]}""")
+s readObject {
+  case "bar" =&gt; s readArray {
+    idx =&gt; println(idx + ": " + s.readLong())
+  }
+}
+</code></pre>
+
+<p>Parsing methods can also be defined and used without the {} syntax</p>
+
+<pre><code>val printfield: Streamy.ObjectParseFunc = {
+  case s =&gt; println("hit field " + s)
+}
+val s = new Streamy("""{"bar":1, "baz":2}""")
+s.readObject(printfield)
+</code></pre>
+
+
+<h1>DOC</h1>
+<a href="doc/main/api/index.html">ScalaDoc</a>
+</body>
+</html>
