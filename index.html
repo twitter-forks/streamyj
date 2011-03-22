@@ -1,77 +1,78 @@
-<!DOCTYPE html>
+
 <html>
 <head>
-  <meta charset='utf-8'>
-
-  <title>twitter/streamyj @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #40d5ee;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #bf2a11; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #bf2a11; }
-    h3 { text-align: center; color: #bf2a11; }
-    a { color: #bf2a11; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
+<title>streamyj</title>
 </head>
-
 <body>
-  <a href="http://github.com/twitter/streamyj"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<h1>README</h1>
+<h1>StreamyJ</h1>
 
-  <div id="container">
+<p>StreamyJ is a Scala helper for the Jackson streaming JSON parser.
+Running some (likely entirely unreliable) benchmarks shows Jackson
+to be significantly faster than GSON, which seems to be the most
+popular non-streaming JSON parser available.</p>
 
-    <div class="download">
-      <a href="http://github.com/twitter/streamyj/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/twitter/streamyj/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+<p>THIS CODE IS DRAFT QUALITY AT BEST.  I've run tests with Twitter JSON
+formats, but the testing is by no means thorough.  There are almost
+certainly dire bugs lurking.</p>
 
-    <h1><a href="http://github.com/twitter/streamyj">streamyj</a>
-      <span class="small">by <a href="http://github.com/twitter">twitter</a></span></h1>
+<p>StreamyJ makes it easy to write idiomatic Scala parsers using Jackson by</p>
 
-    <div class="description">
-      Scala sugar for the Jackson JSON parser
-    </div>
+<ul>
+<li>Converting JsonToken constants to case classes, allowing pattern matching</li>
+<li>Providing a mechanism to provide partial functions to the parser to take action
+on specific parsed items.</li>
+</ul>
 
-    <h2>Authors</h2>
-<p>Jeremy Cloud (jeremy.cloud@me.com)<br/>mmcbride (mccv@twitter.com)<br/>Robey Pointer (robey@twitter.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Twitter, Inc. (github+twitter@twitter.com)<br/>      </p>
+<p>It's easiest to show with an example</p>
+
+<pre><code>val s = new Streamy("""{"bar":1}""")
+s readObject {
+  case "bar" =&gt; println(s.readScalar())
+}
+</code></pre>
+
+<p>In this case, we call readObject() on the Streamy object to tell the parser to read the current object.
+The case statements tell Streamy to print the current field value when the field name is "bar".
+Simple enough.</p>
+
+<p>A slightly more complex example</p>
+
+<pre><code>var baz = 0L
+val s = new Streamy("""{"bar":{"baz":1}}""")
+s readObject {
+  case "bar" =&gt; s readObject {
+    case "baz" =&gt; baz = s.readLong()
+  }
+}
+</code></pre>
+
+<p>Here we have nested handlers.  When the parser encounters the "bar" field, we tell it
+to read another object.  In this nested object, when you see the baz field, assign our
+baz var whatever the value of the baz field is in JSON.</p>
+
+<p>Parsing arrays is also handled.  Instead of field names when reading an object,
+the readArray takes a function that takes the current index in the array.</p>
+
+<pre><code>val s = new Streamy("""{"bar":[1,2,3]}""")
+s readObject {
+  case "bar" =&gt; s readArray {
+    idx =&gt; println(idx + ": " + s.readLong())
+  }
+}
+</code></pre>
+
+<p>Parsing methods can also be defined and used without the {} syntax</p>
+
+<pre><code>val printfield: Streamy.ObjectParseFunc = {
+  case s =&gt; println("hit field " + s)
+}
+val s = new Streamy("""{"bar":1, "baz":2}""")
+s.readObject(printfield)
+</code></pre>
 
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/twitter/streamyj/zipball/master">zip</a> or
-      <a href="http://github.com/twitter/streamyj/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/twitter/streamyj</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/twitter/streamyj">twitter/streamyj</a>
-    </div>
-
-  </div>
-
-  
+<h1>DOC</h1>
+<a href="doc/main/api/index.html">ScalaDoc</a>
 </body>
 </html>
