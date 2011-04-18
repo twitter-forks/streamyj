@@ -59,3 +59,7 @@ Parsing methods can also be defined and used without the {} syntax
     val s = new Streamy("""{"bar":1, "baz":2}""")
     s.readObject(printfield)
 
+Changelog
+=========
+
+3/21/2011 - publishing the site
