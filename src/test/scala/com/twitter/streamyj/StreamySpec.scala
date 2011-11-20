@@ -248,5 +248,19 @@ object StreamySpec extends Specification {
       baz must beSome(1L)
       arr mustEqual List(List(1L), 2L, 3L, 4L)
     }
+
+    "support returning values from function" in {
+      val s = Streamy("""{"bar":"testing"}""")
+      val text = s.readObject{ case "bar" => s.readString() }
+      text mustEqual Some("testing")
+    }
+
+    "support mapping values from arrays" in {
+      val s = Streamy("""{"bar":[1,2,3,4,5]}""")
+      val neg = s.readObject {
+        case "bar" => s.mapArray { case i => -1 * s.readInt() }
+      }
+      neg mustEqual Some(List(-1, -2, -3, -4, -5))
+    }
   }
 }
