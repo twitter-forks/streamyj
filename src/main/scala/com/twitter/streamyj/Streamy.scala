@@ -78,12 +78,12 @@ class Streamy(parser: JsonParser, val source: String) {
   /**
    * alias for readObject(fn)
    */
-  def \[T](fn: PartialFunction[String, T]) = readObject(fn)
+  def \(fn: ObjectParseFunc) = readObject(fn)
 
   /**
    * An alias for readArray.
    */
-  def arr[T](fn: Function[Int, T]) = readArray(fn)
+  def arr(fn: ArrayParseFunc) = readArray(fn)
 
   /**
    * Matches the start of an object value, but without reading the object
@@ -116,7 +116,7 @@ class Streamy(parser: JsonParser, val source: String) {
    * read the corresponding value or skip it.  Not doing so will leave
    * the parser in an unpredictable state.
    */
-  def readObject[T](fn: PartialFunction[String, T]) = {
+  def readObject(fn: ObjectParseFunc) {
     startObject()
     readObjectBody(fn)
   }
@@ -128,7 +128,7 @@ class Streamy(parser: JsonParser, val source: String) {
    * read the corresponding value or skip it.  Not doing so will leave
    * the parser in an unpredictable state.
    */
-  def readObjectOption[T](fn: PartialFunction[String, T]): Boolean = {
+  def readObjectOption(fn: ObjectParseFunc): Boolean = {
     startObjectOption() && { readObjectBody(fn); true }
   }
 
@@ -140,23 +140,65 @@ class Streamy(parser: JsonParser, val source: String) {
    * read the corresponding value or skip it.  Not doing so will leave
    * the parser in an unpredictable state.
    */
-  def readObjectBody[T](fn: PartialFunction[String, T]): Option[T] = {
-    var resp: Option[T] = None
-    def loop(): Option[T] = {
+  def readObjectBody(fn: ObjectParseFunc) {
+    def loop() {
       next() match {
         case EndObject => // done
         case FieldName(name) =>
+          if (fn.isDefinedAt(name)) fn(name) else skipNext()
+          loop()
+        case token => unexpected(token, "field name")
+      }
+    }
+    loop()
+  }
+
+  /**
+   * alias for mapObject
+   */
+  def map[T](fn: PartialFunction[String, T]): Option[T] = mapObject(fn)
+
+  /**
+   * Reads the body of the object, up to the close-curly, returning the *last*
+   * invocation of the supplied partial function.  Any field name not
+   * recognized by the given PartialFunction will be skipped.
+   * The result of calling this is undefined if not already in an object.
+   * If the PartialFunction matches a field name, it MUST either fully
+   * read the corresponding value or skip it.  Not doing so will leave
+   * the parser in an unpredictable state.
+   */
+  def mapObject[T](fn: PartialFunction[String, T]): Option[T] = {
+    startObject()
+    mapObjectBody(fn)
+  }
+
+  /**
+   * Reads the body of the object, up to the close-curly, returning the *last*
+   * invocation of the supplied partial function.  Any field name not
+   * recognized by the given PartialFunction will be skipped.
+   * The result of calling this is undefined if not already in an object.
+   * If the PartialFunction matches a field name, it MUST either fully
+   * read the corresponding value or skip it.  Not doing so will leave
+   * the parser in an unpredictable state.
+   */
+  def mapObjectBody[T](fn: PartialFunction[String, T]): Option[T] = {
+    var res: Option[T] = None
+    def loop() {
+      next() match {
+        case EndObject => // done
+        case FieldName(name) => {
           if (fn.isDefinedAt(name)) {
-            resp = Some(fn(name))
+            res = Some(fn(name))
           } else {
             skipNext()
           }
           loop()
+        }
         case token => unexpected(token, "field name")
       }
-      resp
     }
     loop()
+    res
   }
 
   /**
@@ -225,7 +267,7 @@ class Streamy(parser: JsonParser, val source: String) {
    * The given function MUST either fully read the corresponding value
    * or skip it.  Not doing so will leave the parser in an unpredictable state.
    */
-  def readArray[T](fn: Function[Int, T]) = {
+  def readArray(fn: ArrayParseFunc) {
     startArray()
     readArrayBody(fn)
   }
@@ -237,7 +279,7 @@ class Streamy(parser: JsonParser, val source: String) {
    * The given function MUST either fully read the corresponding value
    * or skip it.  Not doing so will leave the parser in an unpredictable state.
    */
-  def readArrayOption[T](fn: Function[Int, T]): Boolean = {
+  def readArrayOption(fn: ArrayParseFunc): Boolean = {
     startArrayOption() && { readArrayBody(fn); true }
   }
 
@@ -246,7 +288,7 @@ class Streamy(parser: JsonParser, val source: String) {
    * The given function MUST either fully read the corresponding value
    * or skip it.  Not doing so will leave the parser in an unpredictable state.
    */
-  def readArrayBody[T](fn: Function[Int, T]) = {
+  def readArrayBody(fn: ArrayParseFunc) {
     def loop(index: Int) {
       if (peek() == EndArray) {
         next() // skip ]
@@ -258,22 +300,6 @@ class Streamy(parser: JsonParser, val source: String) {
     loop(0)
   }
 
-  def mapArray[T](fn: Function[Int, T]): Seq[T] = {
-    startArray()
-    mapArrayBody(fn)
-  }
-
-  def mapArrayBody[T](fn: Function[Int, T]): Seq[T] = {
-    def loop(index: Int): List[T] = {
-      if (peek() == EndArray) {
-        next() // skip ]
-        Nil
-      } else {
-        fn(index) :: loop(index + 1)
-      }
-    }
-    loop(0)
-  }
   /**
    * Reads an array using an accumulator.
    * The given function MUST either fully read the corresponding value
@@ -299,6 +325,31 @@ class Streamy(parser: JsonParser, val source: String) {
       }
     }
     loop(start, 0)
+  }
+
+  /**
+   * Reads an array, returning a sequence that is the result of applying
+   * the given function to each element of the list
+   */
+  def mapArray[T](fn: Function[Int, T]): Seq[T] = {
+    startArray()
+    mapArrayBody(fn)
+  }
+
+  /**
+   * Reads an array, returning a sequence that is the result of applying
+   * the given function to each element of the list
+   */
+  def mapArrayBody[T](fn: Function[Int, T]): Seq[T] = {
+    def loop(index: Int): List[T] = {
+      if (peek() == EndArray) {
+        next() // skip ]
+        Nil
+      } else {
+        fn(index) :: loop(index + 1)
+      }
+    }
+    loop(0)
   }
 
   /**
