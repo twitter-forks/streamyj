@@ -15,5 +15,5 @@ with PublishSite
 
   override def disableCrossPaths = false
 
-  override def subversionRepository = Some("http://svn.local.twitter.com/maven-public")
+  override def subversionRepository = Some("https://svn.twitter.biz/maven-public")
 }
