@@ -63,3 +63,4 @@ Changelog
 =========
 
 3/21/2011 - publishing the site
+11/20/2011 - adding mapObject and mapArray
